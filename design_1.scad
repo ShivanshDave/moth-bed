@@ -1,3 +1,5 @@
+// "Moth-coffin" by Siddharth Sane
+
 // Var in mm. ALL VARIABLES MUST BE POSITIVE!
 l = 10.13; //Length of the main bed
 w = 5.11; //Width of the main bed

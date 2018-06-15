@@ -1,16 +1,17 @@
 // Var in mm. ALL VARIABLES MUST BE POSITIVE!
 l = 10.13; //Length of the main bed
 w = 5.11; //Width of the main bed
-H = 1.34; //Height of the main structure
+H = 4.34; //Height of the main structure
 wr_l = 4.13; //Length of the wing-rest
 wr_w = 5.11; //Width of the wing-rest
 pr_h = 12.3; //height of the proboscis rest
 pr_w = 1.21;
-t = 0.14; //Overall thickness. VERY IMPORTANT!
+t = 0.9; //Overall thickness. VERY IMPORTANT!
 w_disp = 2.13; //displacement of the wingrests from the front of the main body
 c_h = 4.1; //Overall height of the cap 
 pos = 0 || 1; // Specifies whether the structure goes left or right. 0 is left; 1 is right. Or vice-versa.
-
+g_w = 0.4;
+g_h = 0.15;
 module bed(length,width){
     cube([length, width, t], true);
     }
@@ -32,11 +33,11 @@ module side(pos){
 module wing(pos){
     if(wr_l < (l-w_disp)){
         if(pos == 1){
-        translate([((l-wr_l)/2)-w_disp,((wr_w+w-t)/2),H-t]){
+        translate([((l-wr_l)/2)-w_disp,-((wr_w+w-t)/2),H-t]){
             bed(wr_l,wr_w);
             }
             }else if(pos == 0){
-                translate([((l-wr_l)/2)-w_disp,-((w+wr_w-t)/2),H-t]){
+                translate([((l-wr_l)/2)-w_disp,((w+wr_w-t)/2),H-t]){
                     bed(wr_l,wr_w);
    }
   }
@@ -113,6 +114,51 @@ module useful_module(){
         }
     }
 }
+module groove(pos){
+        if(pos==1){
+            translate([(-w_disp-wr_l)/2,-w/2+g_h,7/8*H]){
+                rotate([ 90.00, 0.00, 0.00 ]){
+                    union(){
+                        resize([(l-w_disp-wr_l),g_w,g_h]){
+                        rotate([0,0,45]){
+                                cylinder(r1=1,r2 = 1/1.3,h=1,false,$fn = 4);
+                            //change the denominator of r2 to get different angles on the groove
+                        }
+                    }
+                    translate([-w/2,0,0]){
+                        resize([(l-w_disp-wr_l),g_w,g_h]){
+                        rotate([0,0,45]){
+                                cylinder(r1=1,r2 = 1/1.3,h=1,false,$fn = 4);
+                            //change the denominator of r2 to get different angles on the groove
+                        }
+                    }
+                }
+                }
+            }
+        }
+    }else{
+            translate([(-w_disp-wr_l)/2,w/2,7/8*H]){
+                rotate([ 90.00, 0.00, 0.00 ]){
+                    union(){
+                        resize([(l-w_disp-wr_l),g_w,g_h]){
+                        rotate([0,0,45]){
+                                cylinder(r1=1,r2 = 1/1.3,h=1,false,$fn = 4);
+                            //change the denominator of r2 to get different angles on the groove
+                        }
+                    }
+                    translate([-w/2,0,0]){
+                        resize([(l-w_disp-wr_l),g_w,g_h]){
+                        rotate([0,0,45]){
+                                cylinder(r1=1,r2 = 1/1.3,h=1,false,$fn = 4);
+                            //change the denominator of r2 to get different angles on the groove
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
  module holder_downer(){
      difference(){
      useful_module(); 
@@ -122,13 +168,22 @@ module useful_module(){
 module moth_sacrificer(){
     rotate([180,0,180]){
         rotate([270,90,0]){
-            bed(l,w);
-            endcap();
-            side(1);      side(0);
-            wing(1);      wing(0);
-            proboscis_rest();
+            difference(){
+                union(){
+                    bed(l,w);
+                    endcap();
+                    side(1);      side(0);
+                    wing(1);      wing(0);
+                    proboscis_rest();
+                }
+                groove(1);
+                groove(0);
+            }
         }
     }
 }
+//groove(1);
 moth_sacrificer();
-translate([ 0.00, H+c_h, 0.00 ])rotate([ 90.00, 270.00, 180.00 ]) holder_downer();
+//translate([ 0.00, H+c_h, 0.00 ])rotate([ 90.00, 270.00, 180.00 ]}holder_downer();
+
+// FIXME : Calculate program variables using user variables !
