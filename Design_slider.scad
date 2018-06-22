@@ -1,17 +1,33 @@
-// Var in mm. ALL VARIABLES MUST BE POSITIVE!
-l = 10.13; //Length of the main bed
-w = 5.11; //Width of the main bed
-H = 4.34; //Height of the main structure
-wr_l = 4.13; //Length of the wing-rest
-wr_w = 5.11; //Width of the wing-rest
-pr_h = 12.3; //height of the proboscis rest
-pr_w = 1.21;
-t = 0.9; //Overall thickness. VERY IMPORTANT!
-w_disp = 2.13; //displacement of the wingrests from the front of the main body
-c_h = 4.1; //Overall height of the cap 
+// User Var in mm. ALL VARIABLES MUST BE POSITIVE!
+l_u = 100; //Length of the main bed
+w_u = 30; //Width of the main bed
+H_u = 20; //Height of the main structure
+wr_l_u = 50; //Length of the wing-rest
+wr_w_u = 50; //Width of the wing-rest
+pr_h_u = 10; //height of the proboscis rest
+pr_w_u = 5;
+t_u = 1; //Overall thickness. VERY IMPORTANT!
+w_disp_u = 5; //displacement of the wingrests from the front of the main body
+c_h_u = 5; //Overall height of the cap 
+g_w_u = 0.4; //Grooves
+g_h_u = 0.15; //Grooves
+
+//Program Variables
+l = l_u + t_u; //Length of the main bed
+w = w_u + (2*t_u); //Width of the main bed
+H = H_u + t_u; //Height of the main structure
+wr_l = wr_l_u; //Length of the wing-rest
+wr_w = wr_w_u; //Width of the wing-rest
+pr_h = pr_h_u; //height of the proboscis rest
+pr_w = pr_w_u;
+t = t_u; //Overall thickness. VERY IMPORTANT!
+w_disp = w_disp_u; //displacement of the wingrests from the front of the main body
+c_h = c_h_u; //Overall height of the cap 
+g_w = g_w_u;
+g_h = g_h_u;
 pos = 0 || 1; // Specifies whether the structure goes left or right. 0 is left; 1 is right. Or vice-versa.
-g_w = 0.4;
-g_h = 0.15;
+
+
 module bed(length,width){
     cube([length, width, t], true);
     }
